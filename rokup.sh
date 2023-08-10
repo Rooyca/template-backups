@@ -5,6 +5,7 @@ backup_dir="$BACKUP_DIR"
 
 if [ -z "$backup_dir" ]; then
   backup_dir="$HOME/rokup"
+fi
 
 # Create the backup directory if it doesn't exist
 if ! mkdir -p "$backup_dir"; then
