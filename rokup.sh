@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Destination directory for the backup
-backup_dir="$HOME/rokup"
+backup_dir="$BACKUP_DIR"
+
+if [ -z "$backup_dir" ]; then
+  backup_dir="$HOME/rokup"
 
 # Create the backup directory if it doesn't exist
 if ! mkdir -p "$backup_dir"; then
@@ -27,13 +30,6 @@ function show_loading_animation() {
 
 echo "=== Starting backup ==="
 echo ""
-echo "[*] Backing up dotfiles to $backup_dir/dotfiles"
-show_loading_animation &
-cp -r "$HOME/.config" "$backup_dir/dotfiles"
-kill $!
-echo -e "\r                "
-
-
 echo "[*] Backing up local files to $backup_dir/local_share"
 show_loading_animation &
 # Exclude list for rsync
@@ -64,12 +60,18 @@ rsync -a "${exclude_list[@]}" "$HOME/.local/share/" "$backup_dir/local_share"
 kill $!
 echo -e "\r                "
 
+echo "[*] Backing up dotfiles to $backup_dir/dotfiles"
+show_loading_animation &
+rsync -a "${exclude_list[@]}" "$HOME/.config" "$backup_dir/dotfiles"
+kill $!
+echo -e "\r                "
+
 echo "[*] Backing up fonts to $backup_dir/fonts"
 show_loading_animation &
 # Save all fonts from system locations
-cp -r /usr/share/fonts "$backup_dir/fonts" &> /dev/null
-cp -r /usr/local/share/fonts "$backup_dir/fonts" &> /dev/null
-cp -r /usr/share/X11/fonts "$backup_dir/fonts" &> /dev/null
+rsync -a "${exclude_list[@]}" /usr/share/fonts "$backup_dir/fonts" &> /dev/null
+rsync -a "${exclude_list[@]}" /usr/local/share/fonts "$backup_dir/fonts" &> /dev/null
+rsync -a "${exclude_list[@]}" /usr/share/X11/fonts "$backup_dir/fonts" &> /dev/null
 kill $!
 echo -e "\r                "
 
