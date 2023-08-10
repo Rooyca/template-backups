@@ -21,3 +21,36 @@
 ---
 1. Even if you set this repository to private, you should not store the `~/.ssh` folder on GitHub.
 2. Just like with the `~/.ssh` folder, you should not store PGP keys on GitHub.
+
+## Running the script
+
+```bash
+chmod +x rookup.sh
+./rookup.sh
+```
+
+|Variable|Description|
+|---|---|
+|`DONT_BACKUP`|Directories to ignore (separated by ',')|
+
+If you want to add more directories to ignore, you can do it like this:
+
+```bash
+export DONT_BACKUP="pnpm,gem,Trash"
+```
+
+## PGP Keys
+
+### Exporting
+
+```bash
+gpg --export-secret-keys <key-id> > private.key
+gpg --export <key-id> > public.key
+```
+
+### Importing
+
+```bash
+gpg --import private.key
+gpg --import public.key
+```
