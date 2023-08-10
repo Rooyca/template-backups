@@ -29,9 +29,10 @@ chmod +x rookup.sh
 ./rookup.sh
 ```
 
-|Variable|Description|
-|---|---|
-|`DONT_BACKUP`|Directories to ignore (separated by ',')|
+|Variable|Description|Default|
+|---|---|---|
+|`DONT_BACKUP`|Directories to ignore (separated by ',')|""|
+|`BACKUP_DIR`|Directory to store the backup|`~/rokup`|
 
 If you want to add more directories to ignore, you can do it like this:
 
